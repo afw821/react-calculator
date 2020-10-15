@@ -24,12 +24,14 @@ class App extends Component {
     if (this.state.result) return;
     if (!this.state.isOperatorChosen) {
       let firstNumber = this.state.firstNumber;
+      if (firstNumber.includes(".") && value === ".") return;
 
       firstNumber += value;
 
       this.setState({ firstNumber });
     } else {
       let secondNumber = this.state.secondNumber;
+      if (secondNumber.includes(".") && value === ".") return;
 
       secondNumber += value;
 
@@ -47,23 +49,23 @@ class App extends Component {
 
     switch (operator) {
       case "+":
-        result = parseInt(firstNumber) + parseInt(secondNumber);
+        result = parseFloat(firstNumber) + parseFloat(secondNumber);
         this.handleSetResult(result);
         break;
       case "-":
-        result = parseInt(firstNumber) - parseInt(secondNumber);
+        result = parseFloat(firstNumber) - parseFloat(secondNumber);
         this.handleSetResult(result);
         break;
       case "/":
-        result = parseInt(firstNumber) / parseInt(secondNumber);
+        result = parseFloat(firstNumber) / parseFloat(secondNumber);
         this.handleSetResult(result);
         break;
       case "^":
-        result = Math.pow(parseInt(firstNumber), parseInt(secondNumber));
+        result = Math.pow(parseFloat(firstNumber), parseFloat(secondNumber));
         this.handleSetResult(result);
         break;
       case "X":
-        result = firstNumber * parseInt(secondNumber);
+        result = firstNumber * parseFloat(secondNumber);
         this.handleSetResult(result);
         break;
       default:
@@ -72,7 +74,24 @@ class App extends Component {
   };
 
   addCommas = (num) => {
-    return num.toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ",");
+    let number = num.toString();
+
+    const regExp = /\B(?=(?:\d{3})+(?!\d))/g;
+
+    const iOfPeriod = number.indexOf(".");
+
+    if (number.includes(".") && iOfPeriod <= 3) return number; //45.9999 instead of 45.9,999
+
+    if (iOfPeriod > 3) {
+      const numBeforePeriod = number
+        .slice(0, iOfPeriod + 1)
+        .replace(regExp, ",");
+      const numAfterPeriod = number.slice(numBeforePeriod.length - 1);
+
+      const result = numBeforePeriod + numAfterPeriod;
+      return result;
+    }
+    return number.replace(regExp, ",");
   };
 
   handleSetOperator = ({ currentTarget }) => {

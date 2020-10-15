@@ -17,7 +17,7 @@ const Calculator = ({
   return (
     <>
       <div className="jumbotron">
-        <h1 className="text-center">jQuery Calculator</h1>
+        <h1 className="text-center">React Calculator</h1>
         <h3 className="text-center">
           Perform basic mathematic operations using the power of React.js!
         </h3>
@@ -54,7 +54,7 @@ const Calculator = ({
                 <Number value="8" handleSetNumber={handleSetNumber} />
                 <Number value="9" handleSetNumber={handleSetNumber} />
                 <Operator
-                  value="multiply"
+                  value="times"
                   operator="x"
                   handleSetOperator={handleSetOperator}
                   isClear={false}
@@ -85,6 +85,12 @@ const Calculator = ({
                   operator="clear"
                   handleSetOperator={handleClear}
                   isClear={true}
+                />
+                <Operator
+                  value="."
+                  operator="."
+                  handleSetOperator={handleSetNumber}
+                  isClear={false}
                 />
               </div>
             </div>
